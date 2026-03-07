@@ -1,0 +1,37 @@
+{
+  "name": "@anthropic/webext-bookmarks",
+  "version": "1.0.0",
+  "description": "Typed bookmark helpers for Chrome extensions",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "chrome",
+    "extensions",
+    "bookmarks",
+    "webext"
+  ],
+  "author": "",
+  "license": "MIT",
+  "packageManager": "pnpm@10.30.3",
+  "files": [
+    "dist"
+  ],
+  "devDependencies": {
+    "@types/chrome": "^0.1.37",
+    "tsup": "^8.5.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  }
+}
