@@ -101,8 +101,6 @@ unsubMoved();
 
 All event listeners return a function to unsubscribe.
 
-
-
 ## License
 
 MIT
