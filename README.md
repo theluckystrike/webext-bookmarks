@@ -1,26 +1,26 @@
 [![CI](https://github.com/theluckystrike/webext-bookmarks/actions/workflows/ci.yml/badge.svg)](https://github.com/theluckystrike/webext-bookmarks/actions)
-[![npm](https://img.shields.io/npm/v/@anthropic/webext-bookmarks)](https://www.npmjs.com/package/@anthropic/webext-bookmarks)
+[![npm](https://img.shields.io/npm/v/@theluckystrike/webext-bookmarks)](https://www.npmjs.com/package/@theluckystrike/webext-bookmarks)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
 
-# @anthropic/webext-bookmarks
+# @theluckystrike/webext-bookmarks
 
 Typed bookmark helpers for Chrome extensions. Part of @zovo/webext.
 
 ## Installation
 
 ```bash
-npm install @anthropic/webext-bookmarks
+npm install @theluckystrike/webext-bookmarks
 ```
 
 ```bash
-pnpm add @anthropic/webext-bookmarks
+pnpm add @theluckystrike/webext-bookmarks
 ```
 
 ## Usage
 
 ```typescript
-import * as bookmarks from '@anthropic/webext-bookmarks';
+import * as bookmarks from '@theluckystrike/webext-bookmarks';
 
 // Get the entire bookmark tree
 const tree = await bookmarks.getTree();
