@@ -10,6 +10,10 @@ Typed bookmark helpers for Chrome extensions. Part of @zovo/webext.
 ## Installation
 
 ```bash
+npm install @anthropic/webext-bookmarks
+```
+
+```bash
 pnpm add @anthropic/webext-bookmarks
 ```
 
@@ -97,6 +101,11 @@ unsubMoved();
 
 All event listeners return a function to unsubscribe.
 
+
+
+## License
+
+MIT
 
 ---
 
