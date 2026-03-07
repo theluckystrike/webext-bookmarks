@@ -91,3 +91,8 @@ unsubMoved();
 - `onMoved(cb)` - Listen for bookmark moves
 
 All event listeners return a function to unsubscribe.
+
+
+---
+
+Built with ❤️ by [zovo.one](https://zovo.one)
