@@ -1,52 +1,67 @@
 # Contributing to @theluckystrike/webext-bookmarks
 
-Thank you for your interest in contributing!
+Thank you for your interest in contributing! This document outlines the process for contributing to this project.
 
-## Development Workflow
+## Getting Started
 
-1. **Fork** the repository
-2. **Clone** your fork:
+1. **Fork the repository** — Click the "Fork" button on GitHub
+2. **Clone your fork**:
    ```bash
    git clone https://github.com/YOUR_USERNAME/webext-bookmarks.git
    cd webext-bookmarks
    ```
-
 3. **Install dependencies**:
    ```bash
    pnpm install
    ```
 
-4. **Create a branch** for your changes:
+## Making Changes
+
+1. **Create a new branch** for your feature or fix:
    ```bash
    git checkout -b feature/your-feature-name
    ```
-
-5. **Make your changes** and add tests if applicable.
-
-6. **Run the build and tests**:
+   or
    ```bash
-   pnpm run build
+   git checkout -b fix/your-fix-name
+   ```
+
+2. **Make your changes** — Ensure your code follows the project's style
+
+3. **Test your changes**:
+   ```bash
    pnpm test
    ```
 
-7. **Commit** your changes with a descriptive message:
+4. **Build the project**:
    ```bash
-   git commit -m "Add feature: your feature description"
+   pnpm build
    ```
 
-8. **Push** to your fork:
+## Submitting a Pull Request
+
+1. **Push your branch** to your fork:
    ```bash
-   git push origin feature/your-feature-name
+   git push origin your-branch-name
    ```
 
-9. **Open a Pull Request** against the `main` branch.
+2. **Open a Pull Request** — Go to the original repository and click "New Pull Request"
+
+3. **Fill out the PR template** — Describe your changes and why they're needed
+
+4. **Submit** — Wait for review and address any feedback
 
 ## Code Style
 
 - Use TypeScript with strict mode
-- Follow existing code conventions
+- Follow existing code formatting
 - Add JSDoc comments for public APIs
+- Write tests for new features
 
 ## Questions?
 
-Open an issue for questions or discussions.
+If you have questions, feel free to open an issue or reach out through the repository.
+
+---
+
+Thank you for contributing!

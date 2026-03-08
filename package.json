@@ -20,6 +20,10 @@
   "bugs": {
     "url": "https://github.com/theluckystrike/webext-bookmarks/issues"
   },
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": false,
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "test": "vitest run",
@@ -30,16 +34,15 @@
     "extensions",
     "bookmarks",
     "webext",
-    "zovo"
+    "zovo",
+    "browser",
+    "chrome-extension",
+    "bookmark-manager",
+    "typed"
   ],
   "author": "theluckystrike",
   "license": "MIT",
   "packageManager": "pnpm@10.30.3",
-  "engines": {
-    "node": ">=18",
-    "pnpm": ">=8"
-  },
-  "sideEffects": false,
   "files": [
     "dist",
     "README.md",
@@ -50,5 +53,9 @@
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }
