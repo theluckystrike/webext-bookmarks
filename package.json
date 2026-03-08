@@ -1,7 +1,7 @@
 {
-  "name": "@anthropic/webext-bookmarks",
+  "name": "@theluckystrike/webext-bookmarks",
   "version": "1.0.0",
-  "description": "Typed bookmark helpers for Chrome extensions",
+  "description": "Typed bookmark helpers for Chrome extensions — create, search, organize, and sync bookmarks with full tree support. Part of @zovo/webext.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -12,6 +12,14 @@
       "require": "./dist/index.js"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theluckystrike/webext-bookmarks.git"
+  },
+  "homepage": "https://github.com/theluckystrike/webext-bookmarks#readme",
+  "bugs": {
+    "url": "https://github.com/theluckystrike/webext-bookmarks/issues"
+  },
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "test": "vitest run",
@@ -21,11 +29,17 @@
     "chrome",
     "extensions",
     "bookmarks",
-    "webext"
+    "webext",
+    "zovo"
   ],
-  "author": "",
+  "author": "theluckystrike",
   "license": "MIT",
   "packageManager": "pnpm@10.30.3",
+  "engines": {
+    "node": ">=18",
+    "pnpm": ">=8"
+  },
+  "sideEffects": false,
   "files": [
     "dist",
     "README.md",

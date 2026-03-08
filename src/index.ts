@@ -27,6 +27,16 @@ export async function getTree(): Promise<chrome.bookmarks.BookmarkTreeNode[]> {
 }
 
 /**
+ * Get the most recently added bookmarks
+ * @param number - The number of bookmarks to retrieve
+ */
+export async function getRecent(
+  numberOfItems: number
+): Promise<chrome.bookmarks.BookmarkTreeNode[]> {
+  return chrome.bookmarks.getRecent(numberOfItems);
+}
+
+/**
  * Get children of a specific bookmark folder
  * @param id - The folder ID to get children from
  */
