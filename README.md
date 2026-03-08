@@ -1,11 +1,29 @@
-[![CI](https://github.com/theluckystrike/webext-bookmarks/actions/workflows/ci.yml/badge.svg)](https://github.com/theluckystrike/webext-bookmarks/actions)
-[![npm](https://img.shields.io/npm/v/@theluckystrike/webext-bookmarks)](https://www.npmjs.com/package/@theluckystrike/webext-bookmarks)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+<div align="center">
 
 # @theluckystrike/webext-bookmarks
 
-Typed bookmark helpers for Chrome extensions. Part of @zovo/webext.
+Typed bookmark helpers for Chrome extensions. Create, search, move, and organize bookmarks with full TypeScript support.
+
+[![npm version](https://img.shields.io/npm/v/@theluckystrike/webext-bookmarks)](https://www.npmjs.com/package/@theluckystrike/webext-bookmarks)
+[![npm downloads](https://img.shields.io/npm/dm/@theluckystrike/webext-bookmarks)](https://www.npmjs.com/package/@theluckystrike/webext-bookmarks)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
+![npm bundle size](https://img.shields.io/bundlephobia/minzip/@theluckystrike/webext-bookmarks)
+
+[Installation](#installation) · [Quick Start](#quick-start) · [API](#api) · [License](#license)
+
+</div>
+
+---
+
+## Features
+
+- **Full CRUD** -- create, read, update, delete bookmarks
+- **Search** -- find bookmarks by title or URL
+- **Tree traversal** -- get bookmark tree and subtrees
+- **Move + reorder** -- move bookmarks between folders
+- **Event listeners** -- subscribe to bookmark created/removed/changed/moved events
+- **Fully typed** -- TypeScript types for all bookmark operations
 
 ## Installation
 
@@ -13,98 +31,79 @@ Typed bookmark helpers for Chrome extensions. Part of @zovo/webext.
 npm install @theluckystrike/webext-bookmarks
 ```
 
+<details>
+<summary>Other package managers</summary>
+
 ```bash
 pnpm add @theluckystrike/webext-bookmarks
+# or
+yarn add @theluckystrike/webext-bookmarks
 ```
 
-## Usage
+</details>
+
+## Quick Start
 
 ```typescript
-import * as bookmarks from '@theluckystrike/webext-bookmarks';
+import { Bookmarks } from "@theluckystrike/webext-bookmarks";
 
-// Get the entire bookmark tree
-const tree = await bookmarks.getTree();
-
-// Get children of a folder
-const children = await bookmarks.getChildren('folder-id');
-
-// Search bookmarks
-const results = await bookmarks.search('example');
-
-// Create a bookmark
-const newBookmark = await bookmarks.create({
-  title: 'My Bookmark',
-  url: 'https://example.com',
-  parentId: 'folder-id'
-});
-
-// Update a bookmark
-const updated = await bookmarks.update('bookmark-id', {
-  title: 'New Title'
-});
-
-// Remove a bookmark
-await bookmarks.remove('bookmark-id');
-
-// Remove a bookmark and all its children
-await bookmarks.removeTree('folder-id');
-
-// Move a bookmark
-await bookmarks.move('bookmark-id', {
-  parentId: 'new-folder-id',
-  index: 0
-});
-
-// Listen to bookmark events
-const unsubCreated = bookmarks.onCreated((id, bookmark) => {
-  console.log('Created:', bookmark.title);
-});
-
-const unsubRemoved = bookmarks.onRemoved((id, removeInfo) => {
-  console.log('Removed from:', removeInfo.parentId);
-});
-
-const unsubChanged = bookmarks.onChanged((id, changeInfo) => {
-  console.log('Changed:', changeInfo.title);
-});
-
-const unsubMoved = bookmarks.onMoved((id, moveInfo) => {
-  console.log('Moved to:', moveInfo.parentId);
-});
-
-// Unsubscribe from events
-unsubCreated();
-unsubRemoved();
-unsubChanged();
-unsubMoved();
+const results = await Bookmarks.search("github");
+const bookmark = await Bookmarks.create({ title: "GitHub", url: "https://github.com" });
+const tree = await Bookmarks.getTree();
+await Bookmarks.remove(bookmark.id);
 ```
 
 ## API
 
-### Functions
+| Method | Description |
+|--------|-------------|
+| `getTree()` | Get the full bookmark tree |
+| `getSubTree(id)` | Get a subtree by folder ID |
+| `get(id)` | Get a single bookmark |
+| `getChildren(id)` | Get children of a folder |
+| `search(query)` | Search bookmarks by title or URL |
+| `create(details)` | Create a bookmark or folder |
+| `update(id, changes)` | Update title or URL |
+| `move(id, destination)` | Move to a different folder |
+| `remove(id)` | Delete a bookmark |
+| `removeTree(id)` | Delete a folder and all contents |
 
-- `getTree()` - Get the entire bookmark tree
-- `getChildren(id)` - Get children of a specific folder
-- `search(query)` - Search bookmarks by query string or object
-- `create(bookmark)` - Create a new bookmark
-- `update(id, changes)` - Update an existing bookmark
-- `remove(id)` - Remove a bookmark (non-recursive)
-- `removeTree(id)` - Remove a bookmark and all its children
-- `move(id, dest)` - Move a bookmark to a new location
+## Permissions
 
-### Event Listeners
+```json
+{ "permissions": ["bookmarks"] }
+```
 
-- `onCreated(cb)` - Listen for bookmark creation
-- `onRemoved(cb)` - Listen for bookmark removal
-- `onChanged(cb)` - Listen for bookmark changes
-- `onMoved(cb)` - Listen for bookmark moves
+## Part of @zovo/webext
 
-All event listeners return a function to unsubscribe.
+This package is part of the [@zovo/webext](https://github.com/theluckystrike) family -- typed, modular utilities for Chrome extension development:
+
+| Package | Description |
+|---------|-------------|
+| [webext-storage](https://github.com/theluckystrike/webext-storage) | Typed storage with schema validation |
+| [webext-messaging](https://github.com/theluckystrike/webext-messaging) | Type-safe message passing |
+| [webext-tabs](https://github.com/theluckystrike/webext-tabs) | Tab query helpers |
+| [webext-cookies](https://github.com/theluckystrike/webext-cookies) | Promise-based cookies API |
+| [webext-i18n](https://github.com/theluckystrike/webext-i18n) | Internationalization toolkit |
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-MIT
+MIT License -- see [LICENSE](LICENSE) for details.
 
 ---
 
-Built by [theluckystrike](https://github.com/theluckystrike) — [zovo.one](https://zovo.one)
+<div align="center">
+
+Built by [theluckystrike](https://github.com/theluckystrike) · [zovo.one](https://zovo.one)
+
+</div>

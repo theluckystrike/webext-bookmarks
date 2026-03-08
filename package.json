@@ -1,7 +1,7 @@
 {
   "name": "@anthropic/webext-bookmarks",
   "version": "1.0.0",
-  "description": "Typed bookmark helpers for Chrome extensions",
+  "description": "Typed bookmark helpers for Chrome extensions. Part of @zovo/webext.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -18,10 +18,14 @@
     "prepare": "npm run build"
   },
   "keywords": [
-    "chrome",
-    "extensions",
+    "chrome-extension",
     "bookmarks",
-    "webext"
+    "bookmark-manager",
+    "typescript",
+    "webextension",
+    "browser-extension",
+    "manifest-v3",
+    "chrome-bookmarks"
   ],
   "author": "",
   "license": "MIT",
