@@ -1,23 +1,14 @@
 [![CI](https://github.com/theluckystrike/webext-bookmarks/actions/workflows/ci.yml/badge.svg)](https://github.com/theluckystrike/webext-bookmarks/actions)
-[![npm](https://img.shields.io/npm/v/@theluckystrike/webext-bookmarks)](https://www.npmjs.com/package/@theluckystrike/webext-bookmarks)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
-[![npm downloads](https://img.shields.io/npm/dm/@theluckystrike/webext-bookmarks)](https://www.npmjs.com/package/@theluckystrike/webext-bookmarks)
+[![Last Commit](https://img.shields.io/github/last-commit/theluckystrike/webext-bookmarks)](https://github.com/theluckystrike/webext-bookmarks/commits/main)
+[![Stars](https://img.shields.io/github/stars/theluckystrike/webext-bookmarks)](https://github.com/theluckystrike/webext-bookmarks)
 
 # @theluckystrike/webext-bookmarks
 
-Typed bookmark helpers for Chrome extensions — create, search, organize, and sync bookmarks with full tree support. Part of [@zovo/webext](https://github.com/theluckystrike/webext).
+Typed bookmark helpers for Chrome extensions. Part of @zovo/webext.
 
-## Features
-
-- **Create Bookmarks** — Add new bookmarks and folders with type-safe parameters
-- **Search** — Full-text search across titles, URLs, and folders
-- **Move & Organize** — Reorder bookmarks and move them between folders
-- **Update** — Modify titles and URLs with ease
-- **Remove** — Delete bookmarks or entire subtrees
-- **Get Tree** — Retrieve the complete bookmark hierarchy
-- **Get Recent** — Access recently added or modified bookmarks
-- **Events** — Subscribe to bookmark changes in real-time
+Provides fully typed TypeScript wrappers around the Chrome `bookmarks` API with improved ergonomics and automatic type inference.
 
 ## Installation
 
@@ -29,7 +20,7 @@ npm install @theluckystrike/webext-bookmarks
 pnpm add @theluckystrike/webext-bookmarks
 ```
 
-## Quick Start
+## Usage
 
 ```typescript
 import * as bookmarks from '@theluckystrike/webext-bookmarks';
@@ -91,146 +82,126 @@ unsubChanged();
 unsubMoved();
 ```
 
-## Advanced Usage
-
-### Building a Tree UI
-
-```typescript
-interface TreeNode {
-  id: string;
-  title: string;
-  url?: string;
-  children: TreeNode[];
-  parentId?: string;
-}
-
-function flattenTree(nodes: chrome.bookmarks.BookmarkTreeNode[]): TreeNode[] {
-  return nodes.map(node => ({
-    id: node.id,
-    title: node.title,
-    url: node.url,
-    children: node.children ? flattenTree(node.children) : [],
-    parentId: node.parentId
-  }));
-}
-
-const tree = await bookmarks.getTree();
-const flat = flattenTree(tree);
-```
-
-### Bookmark Deduplication
-
-```typescript
-async function deduplicateBookmarks(): Promise<number> {
-  const tree = await bookmarks.getTree();
-  const urlMap = new Map<string, string>();
-  let removed = 0;
-
-  function traverse(nodes: chrome.bookmarks.BookmarkTreeNode[]) {
-    for (const node of nodes) {
-      if (node.url) {
-        if (urlMap.has(node.url)) {
-          await bookmarks.remove(node.id);
-          removed++;
-        } else {
-          urlMap.set(node.url, node.id);
-        }
-      }
-      if (node.children) {
-        traverse(node.children);
-      }
-    }
-  }
-
-  traverse(tree);
-  return removed;
-}
-```
-
-### Import/Export Bookmarks
-
-```typescript
-import * as bookmarks from '@theluckystrike/webext-bookmarks';
-
-interface ExportData {
-  version: 1;
-  exportedAt: string;
-  bookmarks: chrome.bookmarks.BookmarkTreeNode[];
-}
-
-async function exportBookmarks(): Promise<ExportData> {
-  const tree = await bookmarks.getTree();
-  return {
-    version: 1,
-    exportedAt: new Date().toISOString(),
-    bookmarks: tree
-  };
-}
-
-async function importBookmarks(data: ExportData, parentId: string = '0') {
-  for (const node of data.bookmarks) {
-    if (node.children) {
-      const folder = await bookmarks.create({
-        parentId,
-        title: node.title
-      });
-      await importBookmarks({ ...data, bookmarks: node.children }, folder.id);
-    } else if (node.url) {
-      await bookmarks.create({
-        parentId,
-        title: node.title,
-        url: node.url
-      });
-    }
-  }
-}
-```
-
 ## API Reference
 
 ### Functions
 
-| Function | Description | Returns |
-|----------|-------------|---------|
-| `getTree()` | Get the entire bookmark tree | `Promise<BookmarkTreeNode[]>` |
-| `getChildren(id)` | Get children of a specific folder | `Promise<BookmarkTreeNode[]>` |
-| `search(query)` | Search bookmarks by query string or object | `Promise<BookmarkTreeNode[]>` |
-| `create(bookmark)` | Create a new bookmark or folder | `Promise<BookmarkTreeNode>` |
-| `update(id, changes)` | Update an existing bookmark | `Promise<BookmarkTreeNode>` |
-| `remove(id)` | Remove a bookmark (non-recursive) | `Promise<void>` |
-| `removeTree(id)` | Remove a bookmark and all its children | `Promise<void>` |
-| `move(id, dest)` | Move a bookmark to a new location | `Promise<BookmarkTreeNode>` |
+#### `getTree(): Promise<chrome.bookmarks.BookmarkTreeNode[]>`
+Gets the entire bookmark tree.
+
+#### `getChildren(id: string): Promise<chrome.bookmarks.BookmarkTreeNode[]>`
+Gets all children of a specific bookmark folder.
+
+**Parameters:**
+- `id` - The folder ID to get children from
+
+#### `search(query: string | { query?: string; url?: string; title?: string }): Promise<chrome.bookmarks.BookmarkTreeNode[]>`
+Searches for bookmarks.
+
+**Parameters:**
+- `query` - Search query string or search parameters object
+
+#### `create(bookmark: BookmarkCreateArg): Promise<chrome.bookmarks.BookmarkTreeNode>`
+Creates a new bookmark.
+
+**Parameters:**
+- `bookmark` - Bookmark creation options
+  - `parentId?: string` - Parent folder ID
+  - `title: string` - Bookmark title
+  - `url?: string` - Bookmark URL
+  - `index?: number` - Position in folder
+
+#### `update(id: string, changes: BookmarkUpdateArg): Promise<chrome.bookmarks.BookmarkTreeNode>`
+Updates an existing bookmark.
+
+**Parameters:**
+- `id` - Bookmark ID to update
+- `changes` - Changes to apply
+  - `title?: string` - New title
+  - `url?: string` - New URL
+
+#### `remove(id: string): Promise<void>`
+Removes a single bookmark (non-recursive).
+
+**Parameters:**
+- `id` - Bookmark ID to remove
+
+#### `removeTree(id: string): Promise<void>`
+Removes a bookmark and all its children recursively.
+
+**Parameters:**
+- `id` - Bookmark ID to remove
+
+#### `move(id: string, dest: BookmarkMoveArg): Promise<chrome.bookmarks.BookmarkTreeNode>`
+Moves a bookmark to a new location.
+
+**Parameters:**
+- `id` - Bookmark ID to move
+- `dest` - Destination
+  - `parentId?: string` - New parent folder
+  - `index?: number` - New position in folder
 
 ### Event Listeners
 
-| Function | Description | Callback Args |
-|----------|-------------|---------------|
-| `onCreated(cb)` | Listen for bookmark creation | `(id: string, bookmark: BookmarkTreeNode)` |
-| `onRemoved(cb)` | Listen for bookmark removal | `(id: string, removeInfo: { parentId, index })` |
-| `onChanged(cb)` | Listen for bookmark changes | `(id: string, changeInfo: { title, url? })` |
-| `onMoved(cb)` | Listen for bookmark moves | `(id: string, moveInfo: { parentId, index, oldParentId, oldIndex })` |
-
 All event listeners return an unsubscribe function.
 
-## Permissions
+#### `onCreated(cb: (id: string, bookmark: chrome.bookmarks.BookmarkTreeNode) => void): () => void`
+Listen for bookmark creation events.
 
-This library requires the `bookmarks` permission in your `manifest.json`:
+#### `onRemoved(cb: (id: string, removeInfo: { parentId: string; index: number }) => void): () => void`
+Listen for bookmark removal events.
 
-```json
-{
-  "permissions": [
-    "bookmarks"
-  ]
+#### `onChanged(cb: (id: string, changeInfo: { title: string; url?: string }) => void): () => void`
+Listen for bookmark change events (title or URL).
+
+#### `onMoved(cb: (id: string, moveInfo: { parentId: string; index: number; oldParentId: string; oldIndex: number }) => void): () => void`
+Listen for bookmark move events.
+
+### Types
+
+#### `BookmarkCreateArg`
+```typescript
+interface BookmarkCreateArg {
+  parentId?: string;
+  title: string;
+  url?: string;
+  index?: number;
 }
 ```
 
-For MV3 (Manifest V3), no additional host permissions are needed for bookmark operations.
+#### `BookmarkUpdateArg`
+```typescript
+interface BookmarkUpdateArg {
+  title?: string;
+  url?: string;
+}
+```
 
-## Related
+#### `BookmarkMoveArg`
+```typescript
+interface BookmarkMoveArg {
+  parentId?: string;
+  index?: number;
+}
+```
 
-- [@theluckystrike/webext-tabs](https://github.com/theluckystrike/webext-tabs) — Typed tab helpers
-- [@theluckystrike/webext-context-menu](https://github.com/theluckystrike/webext-context-menu) — Context menu helpers
-- [@theluckystrike/webext-storage](https://github.com/theluckystrike/chrome-storage-typed) — Typed storage helpers
+## Project Structure
+
+```
+webext-bookmarks/
+├── src/
+│   ├── index.ts          # Main source code
+│   └── __tests__/
+│       └── index.test.ts # Unit tests
+├── .github/
+│   └── workflows/
+│       └── ci.yml       # CI configuration
+├── CHANGELOG.md          # Version history
+├── LICENSE               # MIT license
+├── package.json          # Package configuration
+├── tsconfig.json         # TypeScript configuration
+└── README.md             # This file
+```
 
 ## License
 
@@ -238,4 +209,4 @@ MIT
 
 ---
 
-Built by [theluckystrike](https://github.com/theluckystrike) — [zovo.one](https://zovo.one)
+Built at [zovo.one](https://zovo.one) by [theluckystrike](https://github.com/theluckystrike)
