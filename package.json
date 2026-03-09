@@ -1,7 +1,7 @@
 {
-  "name": "@anthropic/webext-bookmarks",
+  "name": "@theluckystrike/webext-bookmarks",
   "version": "1.0.0",
-  "description": "Typed bookmark helpers for Chrome extensions. Part of @zovo/webext.",
+  "description": "Typed bookmark helpers for Chrome extensions — create, search, organize, and sync bookmarks with full tree support. Part of @zovo/webext.",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
@@ -12,22 +12,35 @@
       "require": "./dist/index.js"
     }
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/theluckystrike/webext-bookmarks.git"
+  },
+  "homepage": "https://github.com/theluckystrike/webext-bookmarks#readme",
+  "bugs": {
+    "url": "https://github.com/theluckystrike/webext-bookmarks/issues"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "sideEffects": false,
   "scripts": {
     "build": "tsup src/index.ts --format esm,cjs --dts",
     "test": "vitest run",
     "prepare": "npm run build"
   },
   "keywords": [
-    "chrome-extension",
+    "chrome",
+    "extensions",
     "bookmarks",
+    "webext",
+    "zovo",
+    "browser",
+    "chrome-extension",
     "bookmark-manager",
-    "typescript",
-    "webextension",
-    "browser-extension",
-    "manifest-v3",
-    "chrome-bookmarks"
+    "typed"
   ],
-  "author": "",
+  "author": "theluckystrike",
   "license": "MIT",
   "packageManager": "pnpm@10.30.3",
   "files": [
@@ -40,5 +53,9 @@
     "tsup": "^8.5.1",
     "typescript": "^5.9.3",
     "vitest": "^4.0.18"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org"
   }
 }
